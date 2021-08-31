@@ -4,10 +4,18 @@ import java.util.Scanner;
 public class sumsort {
 
     public static void main(String[] args) {
+
+
+        System.out.println(calculateSum());
+    }
+
+
+
+    static int calculateSum(){
         final Scanner in = new Scanner(System.in);
 
         final int n = Integer.parseInt(in.nextLine());
-
+        if(n<=0) return 0;
         //The following line will have n integers that we have to read in.
 
         //An inefficient way is to load all numbers into an array, use some sorting algorithm. And then cut the array at the middle, sum of the upper side of the array.
@@ -40,12 +48,13 @@ public class sumsort {
                 sum += array[i];
             }
         }else{
-            for (int i = ((n+1)/2)-1; i < n; i++) {
+            for (int i = (int)Math.floor(((n+1)/2))-1; i < n; i++) {
                 sum += array[i];
             }
         }
 
-        System.out.println(sum);
+
+        return sum;
     }
     
 }
