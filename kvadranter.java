@@ -5,6 +5,7 @@ public class kvadranter {
     public static void main(String[] args) {
 
         System.out.println(raknaKvadrat());
+        System.err.println("But as we can see this is wrooong");
 
     }
 
