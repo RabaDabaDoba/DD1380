@@ -4,9 +4,9 @@ import java.util.Scanner;
 public class kvadranter {
     public static void main(String[] args) {
 
-        System.out.println(raknaKvadrat());
-        System.err.println("But as we can see this is wrooong");
-
+        //System.out.println(raknaKvadrat());
+        //int [] pos = {2,5};
+        //System.err.println(translateToNumber(pos, 3));
     }
 
     private static String raknaKvadrat() {
@@ -61,14 +61,48 @@ public class kvadranter {
             return "outside";
         } else {
             // Now we convert back
-            return translateToNumber(posXY);
+            return translateToNumber(posXY, size);
         }
 
     }
 
-    private static String translateToNumber(int[] posXY) {
 
-        return null;
+    private static String translateToNumber(int[] posXY, int size) {
+
+        //Given a postion (x,y) we should convert it to a number
+        //Ex 4³, so a 8x8 = 64 cells. Given cell at [5][5] we should get a number with 3 digits, being 2.3.2
+        /*
+        What we do is that we break down each array by only looking on the values. Lets look at it[X][Y]
+        If X is larger then 2^n /2 we go right, otherwise left. If Y is larger then 2^n /2 we go down, else up. 
+        This we do till we have one cell left in a recursive way.
+
+    
+        */
+        int row = posXY[0];
+        int col = posXY[1];
+        int currentSize = (int)Math.pow(2, size); //Length of the sides
+
+        while (size >= 2) {
+            if(row+1 > currentSize/2 && col+1 <= 2){
+                //This means we're in section 1
+                posXY[0] = row-currentSize/2;
+                posXY[1] = col;
+
+                return "1." + translateToNumber(posXY, size-1)
+            }else if(row+1 > currentSize/2 && col+1 > currentSize/2){
+                //This means we're in section 2
+            }else if(row+1 <= currentSize/2 && col+1 <= currentSize/2){
+                //This means we're in section 3
+            }else if(row+1 <= currentSize/2 && col+1 > currentSize/2){
+                //This means we're in section 4
+                //posXY = {row,col-currentSize/2};
+                posXY[0] = row;
+                posXY[1] = col-currentSize/2;
+                return "4." + translateToNumber(posXY, size-1);
+            }
+        }
+
+        return "";
     }
 
     private static int[] translateToPos(int[] pos) {
@@ -98,37 +132,37 @@ public class kvadranter {
             switch (currentNumber) {
                 // Each case represent each quadrant, i.e. the number we are given
                 case 1:
-                    colMin = originalSize - currentSize;
-                    colMax = (currentSize / 2);
-                    rowMin = (currentSize / 2) + 1;
-                    rowMax = currentSize;
+                    colMin = Math.max(colMin, originalSize - currentSize);
+                    colMax = Math.max(colMax, (currentSize / 2));
+                    rowMin = Math.max(rowMin, (currentSize / 2) + 1);
+                    rowMax = Math.max(rowMax, currentSize);
 
                     currentSize /= 2;
                     break;
 
                 case 2:
-                    colMin = (currentSize / 2) + 1;
-                    colMax = currentSize;
-                    rowMin = (currentSize / 2) + 1;
-                    rowMax = currentSize;
+                    colMin = Math.max(colMin, (currentSize / 2) + 1);
+                    colMax = Math.min(colMax, currentSize);
+                    rowMin = Math.max(rowMin, (currentSize / 2) + 1);
+                    rowMax = Math.min(rowMax, currentSize);
 
                     currentSize /= 2;
                     break;
 
                 case 3:
-                    colMin = originalSize - currentSize;
-                    colMax = (currentSize / 2);
-                    rowMin = originalSize - currentSize;
-                    rowMax = (currentSize / 2);
+                    colMin = Math.max(colMin, originalSize - currentSize);
+                    colMax = Math.min(colMax, currentSize / 2);
+                    rowMin = Math.max(rowMin, originalSize - currentSize);
+                    rowMax = Math.min(rowMax, (currentSize / 2));
 
                     currentSize /= 2;
                     break;
 
                 case 4:
-                    colMin = (currentSize / 2) + 1;
-                    colMax = currentSize;
-                    rowMin = originalSize - currentSize;
-                    rowMax = (currentSize / 2);
+                    colMin = Math.max(colMin, (currentSize / 2) + 1);
+                    colMax = Math.min(colMax, currentSize);
+                    rowMin = Math.max(rowMin, originalSize - currentSize);
+                    rowMax = Math.min(rowMax, (currentSize / 2));
                     currentSize /= 2;
                     break;
 
