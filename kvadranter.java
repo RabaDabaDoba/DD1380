@@ -5,8 +5,8 @@ public class kvadranter {
     public static void main(String[] args) {
 
         //System.out.println(raknaKvadrat());
-        //int [] pos = {2,5};
-        //System.err.println(translateToNumber(pos, 3));
+        int [] pos = {2,5};
+        System.err.println(translateToNumber(pos, 3));
     }
 
     private static String raknaKvadrat() {
@@ -81,14 +81,13 @@ public class kvadranter {
         int row = posXY[0];
         int col = posXY[1];
         int currentSize = (int)Math.pow(2, size); //Length of the sides
-
-        while (size >= 2) {
-            if(row+1 > currentSize/2 && col+1 <= 2){
+            if(size == 0) return "";
+            else if(row+1 > currentSize/2 && col+1 <= 2){
                 //This means we're in section 1
                 posXY[0] = row-currentSize/2;
                 posXY[1] = col;
 
-                return "1." + translateToNumber(posXY, size-1)
+                return "1." + translateToNumber(posXY, size-1);
             }else if(row+1 > currentSize/2 && col+1 > currentSize/2){
                 //This means we're in section 2
             }else if(row+1 <= currentSize/2 && col+1 <= currentSize/2){
@@ -99,7 +98,7 @@ public class kvadranter {
                 posXY[0] = row;
                 posXY[1] = col-currentSize/2;
                 return "4." + translateToNumber(posXY, size-1);
-            }
+            
         }
 
         return "";
