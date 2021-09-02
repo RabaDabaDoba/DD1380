@@ -3,17 +3,17 @@ import java.util.Scanner;
 public class ordTillTalFloat {
     public static void main(String[] args) {
 
-        System.out.println((int)ordTillTal_3());
+        System.out.println(ordTillTal_3());
 
     }
-    private static float ordTillTal_3() {
+    private static long ordTillTal_3() {
 
         final Scanner in = new Scanner(System.in, "utf-8");
 
         String number = in.nextLine();
         String[] numbers_s = number.split(" ");
 
-        int[] numbers = new int[numbers_s.length+1];
+        long[] numbers = new long[numbers_s.length+1];
         for (int i = 0; i < numbers_s.length; i++) {
             numbers[i] = parser(numbers_s[i]);
         }
@@ -22,20 +22,20 @@ public class ordTillTalFloat {
         printArray(numbers_s);
         printArray(numbers);
 
-        float total = 0;
+        long total = 0;
 
-        float[] tempArray = new float[4];
+        long[] tempArray = new long[4];
         // This array will be filled with the indicies of the numbers before b/m/k
         int tempIndex;
         // We try to locate bil,mil,k and rest. Then we can sum then up after finding
         // its multiplier.
         // 0 in this case is for the special case
-        int[] quantities = { 1000000000, 1000000, 1000,0};
+        long[] quantities = { 1000000000, 1000000, 1000,0};
 
         for (int i = 0; i < quantities.length; i++) {
-            tempArray = new float[4];
+            tempArray = new long[4];
             System.err.println("at: " + i);
-            if ((tempIndex = indexOf(quantities[i], numbers)) != -1) {
+            if ((tempIndex = (int)indexOf(quantities[i], numbers)) != -1) {
                 // If quantity exists
                 System.err.println("found quantity " + quantities[i]);
                 tempArray[3] = tempIndex - 1;
@@ -45,7 +45,7 @@ public class ordTillTalFloat {
 
                 // Now we send this array to an controller which also returns the multiplier for
                 // this quantity
-                float multiplier = controllArray(tempArray, quantities[i], numbers, quantities);
+                long multiplier = controllArray(tempArray, quantities[i], numbers, quantities);
                 if (quantities[i] == 0) {
                     total += multiplier * 1;
                 }else{
@@ -63,13 +63,13 @@ public class ordTillTalFloat {
 
     }
 
-    private static void printArray(int[] array) {
+    private static void printArray(long[] array) {
         for (int i = 0; i < array.length; i++) {
             System.err.print(array[i] + " ");
         }
         System.err.println();
     }
-    private static float controllArray(float[] tempArray, float i, int[] numbers, int[] quantities) {
+    private static long controllArray(long[] tempArray, long i, long[] numbers, long[] quantities) {
         System.err.println("Before controllArray with i = " + i);
         printArray(tempArray);
         
@@ -89,7 +89,7 @@ public class ordTillTalFloat {
             System.err.println("j: " + j);
             if (!zero) {
                 System.err.println("Havent found stop yet");
-                if ((Math.signum(tempArray[j]) == -1 || (numbers[(int)tempArray[j]] > i && containsIn((float)numbers[(int)tempArray[j]], quantities)))) {
+                if ((Math.signum(tempArray[j]) == -1 || (numbers[(int)tempArray[j]] > i && containsIn(numbers[(int)tempArray[j]], quantities)))) {
                     // If we have a negative number or larger number as mentioned above
                     // Then we want to stop and just keep what we've itterated through previously.
                     System.err.println("We found the stop at: " + j);
@@ -120,13 +120,13 @@ public class ordTillTalFloat {
         // Now when we have a perfect 4 sized array with valid number, we send this to
         // find the multipler
 
-        float multiplier = findMultiplier(tempArray);
+        long multiplier = findMultiplier(tempArray);
 
         return multiplier;
     }
 
-    private static boolean containsIn(float number, int [] array){
-        for (float i : array) {
+    private static boolean containsIn(long number, long [] array){
+        for (long i : array) {
             if(i == number) {
                 System.err.println(i + " contains in the array of size " + array.length);
                 return true;
@@ -135,7 +135,7 @@ public class ordTillTalFloat {
         return false;
     }
 
-    private static float findMultiplier(float[] numbers) {
+    private static long findMultiplier(long[] numbers) {
         // Find the multipliers. Since each multiplier can at most be 999, we can have
         // some cases of these 4 numbers:
         // X * 100 + Y + Z
@@ -148,9 +148,9 @@ public class ordTillTalFloat {
         // to these 4 numbers.
         // Ex: fem hundra sju miljoner: index of 100 = 1, index of miljoner = 3,
         // distance till previous = 3
-        int index_of_100 = indexOf(100, numbers);
+        int index_of_100 = (int)indexOf(100, numbers);
 
-        float multiplier = 0;
+        long multiplier = 0;
         //if (index_of_100 != -1) {
             switch (index_of_100) {
                 case 3:
@@ -185,7 +185,7 @@ public class ordTillTalFloat {
         return multiplier;
     }
 
-    private static void printArray(float[] array) {
+    private static void printArray(int[] array) {
         for (int i = 0; i < array.length; i++) {
             System.err.print(array[i] + " ");
         }
@@ -200,6 +200,18 @@ public class ordTillTalFloat {
     }
 
     // For integers
+    private static long indexOf(long string, long[] array) {
+        // This functions takes a list and a number, if this number exists in this array
+        // we return the location of this number in the array, else -1
+
+        for (int i = 0; i < array.length; i++) {
+            if (string == (array[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private static int indexOf(int string, int[] array) {
         // This functions takes a list and a number, if this number exists in this array
         // we return the location of this number in the array, else -1
@@ -212,19 +224,7 @@ public class ordTillTalFloat {
         return -1;
     }
 
-    private static int indexOf(float string, float[] array) {
-        // This functions takes a list and a number, if this number exists in this array
-        // we return the location of this number in the array, else -1
-
-        for (int i = 0; i < array.length; i++) {
-            if (string == (array[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    static int parser(String text) {
+    static long parser(String text) {
         switch (text) {
             // special
             case "en":
