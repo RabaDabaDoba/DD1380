@@ -14,14 +14,53 @@ public class kvadranter {
         //pos = translateToPos2(pos);
         //System.err.println(pos[0] + " " + pos[1]);
 
-        raknaKvadrater();
+        //String sol = raknaKvadrat();
+        //System.out.println(sol);
+
+        solution();
+
+    }
+
+    private static void solution() {
+         // First we read the two lines of data
+         Scanner in = new Scanner(System.in);
+         String cell = in.nextLine();
+         int x = in.nextInt();
+         int y = in.nextInt();
+ 
+         System.err.println(cell + " " + x + " " + y);
+ 
+         // Now we split the cell to figure out how big the paper is:
+         String[] posString = cell.split("\\.");
+         int[] number = new int[posString.length];
+         for (int i = 0; i < number.length; i++) {
+            number[i] = Integer.parseInt(posString[i]);
+         }
+
+        int [] pos = translateToPos2(number);
+        int size = number.length;
+        int largesize = (int) Math.pow(2, size);
+        pos[0] -= y;
+        pos[1] += x;
+        System.err.println("Now we jump " + x + "rows and " + y + " columns");
+        System.err.println(pos[0] + ", " + pos[1]);
+        if (pos[0] >= largesize || pos[0] < 0 || pos[1] >= largesize || pos[1] < 0) {
+            // Outside
+            // System.err.println(posXY[0] + ", " + posXY[1]);
+            System.out.println("outside");
+        } else {
+            // Now we convert back
+            System.out.println( translateToNumber(pos, size));
+        }
+            
+
     }
 
     private static void raknaKvadrater(){
-        int [] s = {1,4,1}; //From a string
-        int [] pos = translateToPos(s);
+        int [] s = {4,1,4}; //From a string
+        int [] pos = translateToPos2(s);
         System.err.println(pos[0] + " " + pos[1]);
-        System.err.println(translateToNumber(new int[]{2,5}, s.length));
+        System.err.println(translateToNumber(pos, s.length));
     }
 
     private static String raknaKvadrat() {
@@ -140,29 +179,39 @@ public class kvadranter {
         for (int i = 0; i < number.length; i++) {
             int currentNumber = number[i];
             int currentSize = (int)Math.pow(2, number.length - i);
+            int cs2 = currentSize/2;
             switch (currentNumber) {
                 case 1:
                     //Then we know that it is in the bottom left part
                     //This means: row > currentSize/2, col <= currentSize/2
                 
 
-                    if(rowMin < 1 + currentSize/2)rowMin = 1 + currentSize/2;
-                    if(colMax > currentSize/2)colMax = currentSize/2;
+                    //if(rowMin < 1 + currentSize/2)rowMin = 1 + currentSize/2;
+                    //if(colMax > currentSize/2)colMax = currentSize/2;
+
+                    if(rowMin + cs2 <= rowMax)rowMin += cs2;
+                    if(colMax - cs2 >= colMin)colMax -= currentSize/2;
                     break;
     
                 case 2:
-                    if(rowMin < 1 + currentSize/2)rowMin = 1 + currentSize/2;
-                    if(colMin < 1 + currentSize/2)colMin = 1 + currentSize/2;
+                    //if(rowMin < 1 + currentSize/2)rowMin = 1 + currentSize/2;
+                    //if(colMin < 1 + currentSize/2)colMin = 1 + currentSize/2;
+                    if(rowMin + cs2 <= rowMax)rowMin += currentSize/2;
+                    if(colMin + cs2 <= colMax)colMin += currentSize/2;
                     break;
                 case 3:
-                    if(rowMax > currentSize/2) rowMax = currentSize/2;
-                    if(colMax > currentSize/2) colMax = currentSize/2;
+                    //if(rowMax > currentSize/2) rowMax = currentSize/2;
+                    //if(colMax > currentSize/2) colMax = currentSize/2;
+                    if(rowMax - cs2 >= rowMin)rowMax -= currentSize/2;
+                    if(colMax - cs2 >= colMin)colMax -= currentSize/2;
+
                     break;
                 case 4:
                     
-                    if(rowMax > currentSize/2)rowMax = currentSize/2;
-                    if(colMin < 1 + currentSize/2) colMin = 1 + currentSize/2;
-                    //colMin = 1 + currentSize/2;
+                    //if(rowMax > currentSize/2)rowMax = currentSize/2;
+                    //if(colMin < 1 + currentSize/2) colMin = 1 + currentSize/2;
+                    if(colMin + cs2 <= colMax)colMin += currentSize/2;
+                    if(rowMax - cs2 >= rowMin)rowMax -= currentSize/2;
                     break;
     
                 default:

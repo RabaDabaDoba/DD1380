@@ -6,55 +6,32 @@ public class sumsort {
     public static void main(String[] args) {
 
 
-        System.out.println(calculateSum());
+        System.out.println(sumItUp());
     }
 
-
-
-    static int calculateSum(){
-        final Scanner in = new Scanner(System.in);
-
-        final int n = Integer.parseInt(in.nextLine());
-        if(n<=0) return 0;
-        //The following line will have n integers that we have to read in.
-
-        //An inefficient way is to load all numbers into an array, use some sorting algorithm. And then cut the array at the middle, sum of the upper side of the array.
-        int [] array = new int[n];
-        for (int i = 0; i < n; i++) {
-            //Now we can add all the integers to the list
-            int currentInt = Integer.parseInt(in.next());
-            array[i] = currentInt;
-        }
-
+    private static int sumItUp() {
+        Scanner in = new Scanner(System.in);
+        int n = Integer.parseInt(in.nextLine());
+        int [] array = new int [n];
         
         for (int i = 0; i < n; i++) {
-            System.err.print(array[i] + " ");
-        }
-        System.err.println();
-        //Now when its filled we can sort it using some sorting algorithm
-        Arrays.sort(array);
-        //Now we sum the upper half
-        for (int i = 0; i < n; i++) {
-            System.err.print(array[i] + " ");
+            array[i] = Integer.parseInt(in.next());
         }
 
-        System.err.println();
-
+        Arrays.parallelSort(array);
         int sum = 0;
-        
-        if(n%2 == 0){
-            //Its even
-            for (int i = (n/2)-1; i < n; i++) {
-                sum += array[i];
+        if(n%2 == 0){//Even
+            for (int j = (n/2); j < n; j++) {
+                sum += array[j];
             }
         }else{
-            for (int i = (int)Math.floor(((n+1)/2))-1; i < n; i++) {
-                sum += array[i];
+            for (int j = ((n+1)/2)-1; j < n; j++) {
+                sum += array[j];
             }
-        }
-
+        } 
 
         return sum;
+
     }
-    
+
 }
